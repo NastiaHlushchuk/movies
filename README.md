@@ -20,7 +20,7 @@ You also can build and run docker container from project directory. Use the comm
 
 ## Run app from DockerHub
 
-Go to `https://hub.docker.com/repository/docker/anastasiiahl/movies/general`
+URL for DockerHub image: `https://hub.docker.com/repository/docker/anastasiiahl/movies/general`
 
 In your terminal run:
 `docker pull anastasiiahl/movies`
