@@ -7,7 +7,6 @@ const db = require("./models/index");
 const app = express();
 const config = require("./config/config");
 const port = config.port;
-const host = config.host;
 require("dotenv").config();
 
 app.use(express.json());
@@ -15,12 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ createParentPath: true }));
 
 app.set("port", port);
-app.set("host", host);
 
 const server = http.createServer(app);
 
-server.listen(port, host, () => {
-  console.log(`Running on http://${host}:${port}`);
+server.listen(port, () => {
+  console.log(`Running on port ${port}`);
 });
 
 db.sequelize.sync().then(() => {

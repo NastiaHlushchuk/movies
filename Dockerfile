@@ -8,5 +8,5 @@ RUN npm install --silent
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE ${APP_PORT}
 CMD [ "npm", "start"]
