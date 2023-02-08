@@ -1,19 +1,25 @@
-## Installation
-```npm install```
+## Run app from IDE
 
-`.env.example` files are ready to use. 
+`.env.example` file is ready to use
+```
+Create `.env` file in project's root directory
+```
+Proceed to `.env` file and set variables
+```
+In your terminal run:
+`npm install`
+
+To run app use command:
+`npm start`
 
 ---
 
-## Run app
-Set ```.env``` variables
-Proceed to `.env` file and set variable as well.
-Before running apps, please make sure that you set `.env`
-```
-docker run --name movies -p 8000:8050 -e APP_PORT=8050 your_super_account/movies
-```
+## Run app from DockerHub
 
----
+Go to https://hub.docker.com/repository/docker/anastasiiahl/movies/general
 
-### Troubleshooting
-If you have issues with ```npm install``` use ```npm install -force``` instead
+In your terminal run:
+`docker pull anastasiiahl/movies`
+
+To run app use command:
+`docker run --name movies -p 8000:8050 -e APP_PORT=8050 anastasiiahl/movies`
