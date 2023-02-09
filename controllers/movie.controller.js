@@ -27,6 +27,9 @@ class MovieController {
   async create(req, res) {
     try {
       const movie = await movieService.create(req);
+      if (!movie.id) {
+        return res.status(422).send("Invalid value for Movie.format");
+      }
       return res.status(201).send({ data: movie, status: 1 });
     } catch (err) {
       return res.status(err.code || 422).send(err.message || "Invalid entity");

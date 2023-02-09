@@ -108,7 +108,6 @@ class MovieService {
           return movie;
         })
       );
-      // console.log("MOVIES", createdMovies);
       return ImportMovies.createResponse(createdMovies);
     } catch (err) {
       throw err;
