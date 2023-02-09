@@ -10,12 +10,17 @@ const storagePath = config.storagePath;
 
 class MovieService {
   async findById(req) {
+    try{
     const id = req.params.id;
     const movie = await repositoryService.findById(id);
     return movie;
+    } catch {
+      throw err;
+    }
   }
 
   async findAll(req) {
+    try{
     const { title, actor } = req.query;
     let movies;
 
@@ -26,6 +31,9 @@ class MovieService {
       movies = await repositoryService.findAll(title);
       return GetAllMovies.createResponse(movies);
     }
+  } catch (err) {
+    throw err;
+  }
   }
 
   async create(req) {
@@ -42,7 +50,7 @@ class MovieService {
         return movie;
       }
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 
@@ -63,7 +71,7 @@ class MovieService {
 
       return updated;
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 
@@ -75,7 +83,7 @@ class MovieService {
 
       return deleted;
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 
@@ -85,7 +93,7 @@ class MovieService {
       const path = storagePath + "/files/" + file.name;
       file.mv(path, (err) => {
         if (err) {
-          return err;
+          throw err;
         }
       });
 
@@ -104,7 +112,7 @@ class MovieService {
 
       return ImportMovies.createResponse(createdMovies);
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 
@@ -138,7 +146,7 @@ class MovieService {
         let actors = item.Stars.split(", ");
         return {
           title: item.Title,
-          year: Object.values(item)[1],
+          year: item["Release Year"],
           format: item.Format,
           actors: actors,
         };

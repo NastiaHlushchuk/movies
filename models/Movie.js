@@ -1,4 +1,4 @@
-const ALLOWED_VALUES = ["VHS", "DVD", "Blu-ray"];
+const ALLOWED_VALUES = ["VHS", "DVD", "Blu-Ray"];
 
 module.exports = (sequelize, DataTypes) => {
   const Movie = sequelize.define("Movie", {
