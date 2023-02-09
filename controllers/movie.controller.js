@@ -8,7 +8,6 @@ class MovieController {
         .status(200)
         .send({ data: list.data, meta: list.meta, status: 1 });
     } catch (err) {
-      console.log(err);
       return res.status(err.code || 404).send("Movies not found");
     }
   }
@@ -28,12 +27,8 @@ class MovieController {
   async create(req, res) {
     try {
       const movie = await movieService.create(req);
-      if (!movie.id) {
-        return res.status(422).send("Invalid value for Movie.format");
-      }
       return res.status(201).send({ data: movie, status: 1 });
     } catch (err) {
-      console.log("e", err);
       return res.status(err.code || 422).send(err.message || "Invalid entity");
     }
   }

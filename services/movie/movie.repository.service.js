@@ -34,7 +34,7 @@ class MovieRepositoryService {
     return await Actor.findAndCountAll({
       where: {
         name: {
-          [Op.like]: `${actor}%`,
+          [Op.like]: `%${actor}%`,
         },
       },
       attributes: [],
@@ -51,17 +51,27 @@ class MovieRepositoryService {
   async findByTitle(title) {
     return await Movie.findOne({
       where: {
-        [Op.like]: `${title}%`,
+        [Op.like]: `%${title}%`,
       },
     });
   }
 
   async create(movie) {
-    return await Movie.create({
-      title: movie.title,
-      year: movie.year,
-      format: movie.format,
+    const existed = await Movie.findOne({
+      where: {
+        title: movie.title,
+      },
     });
+
+    if (existed === null) {
+      return await Movie.create({
+        title: movie.title,
+        year: +movie.year,
+        format: movie.format,
+      });
+    } else {
+      return `Movie "${existed.title}" is already existed`;
+    }
   }
 
   async update(movie, newData) {

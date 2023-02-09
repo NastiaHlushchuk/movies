@@ -1,11 +1,16 @@
 class ImportMovies {
   static createResponse(list) {
-    console.log(list);
-    const count = list.length;
+    const total = list.length;
+    let count = 0;
+    list.forEach((item) => {
+      if (item.hasOwnProperty("id")) {
+        count += 1;
+      }
+    });
     let response = {};
 
     response.data = list;
-    response.meta = { imported: count, total: count };
+    response.meta = { imported: count, total: total };
     return response;
   }
 }

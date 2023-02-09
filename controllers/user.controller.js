@@ -1,8 +1,18 @@
 const userService = require("../services/user/user.service");
 const tokenService = require("../services/token/token.service");
+const { validationResult } = require("express-validator");
+
 class UserController {
   async register(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          errors: errors.array(),
+        });
+      }
+
       const user = await userService.createUser(req);
       if (!user) {
         return res.status(400).send("Password isn't confirmed");
@@ -16,7 +26,6 @@ class UserController {
         status: 1,
       });
     } catch (err) {
-      console.log(err);
       return res.status(err.code || 400).send("Invalid input data");
     }
   }
@@ -36,7 +45,6 @@ class UserController {
         status: 1,
       });
     } catch (err) {
-      console.log(err);
       return res.status(err.code || 401).send("Invalid credentials");
     }
   }

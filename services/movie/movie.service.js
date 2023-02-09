@@ -10,17 +10,12 @@ const storagePath = config.storagePath;
 
 class MovieService {
   async findById(req) {
-    try{
     const id = req.params.id;
     const movie = await repositoryService.findById(id);
     return movie;
-    } catch {
-      throw err;
-    }
   }
 
   async findAll(req) {
-    try{
     const { title, actor } = req.query;
     let movies;
 
@@ -31,20 +26,21 @@ class MovieService {
       movies = await repositoryService.findAll(title);
       return GetAllMovies.createResponse(movies);
     }
-  } catch (err) {
-    throw err;
-  }
   }
 
   async create(req) {
     try {
-      const actors = req.body.actors;
+      const { actors, year } = req.body;
+      if (!(+year >= 1850 && +year <= 2021)) {
+        return "Movie's year must be between 1850 - 2021";
+      }
 
       const movie = await repositoryService.create(req.body);
-      const addedActors = await repositoryService.createActors(actors);
-      await repositoryService.addActorsToMovie(movie.id, addedActors);
 
       if (movie && movie.id) {
+        const addedActors = await repositoryService.createActors(actors);
+        await repositoryService.addActorsToMovie(movie.id, addedActors);
+
         return CreateMovie.createResponse(movie, addedActors);
       } else {
         return movie;
@@ -71,7 +67,7 @@ class MovieService {
 
       return updated;
     } catch (err) {
-      throw err;
+      return err;
     }
   }
 
@@ -83,7 +79,7 @@ class MovieService {
 
       return deleted;
     } catch (err) {
-      throw err;
+      return err;
     }
   }
 
@@ -103,13 +99,16 @@ class MovieService {
       const createdMovies = await Promise.all(
         transformedData.map(async (data) => {
           const movie = await repositoryService.create(data);
-          const addedActors = await repositoryService.createActors(data.actors);
-          await repositoryService.addActorsToMovie(movie.id, addedActors);
-
-          return await movie;
+          if (movie && movie.id) {
+            const addedActors = await repositoryService.createActors(
+              data.actors
+            );
+            await repositoryService.addActorsToMovie(movie.id, addedActors);
+          }
+          return movie;
         })
       );
-
+      // console.log("MOVIES", createdMovies);
       return ImportMovies.createResponse(createdMovies);
     } catch (err) {
       throw err;
